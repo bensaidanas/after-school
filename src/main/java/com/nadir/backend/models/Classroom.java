@@ -19,9 +19,13 @@ public class Classroom {
     private Long id;
 
     private String name;
-    private int year;
+
+    @ManyToOne
+    @JoinColumn(name = "grade_id")
+    private Grade grade;
+
     private int sessionNumber;
-    private int maxCapacity;
+    private double price;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")
