@@ -25,8 +25,9 @@ public class StudentPayment {
     private Classroom classroom;
 
     private String month;
+    private int year;
     private double amount;
 
-    private boolean paymentStatus;
+    private boolean isPaid;
 }
 
