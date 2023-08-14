@@ -47,5 +47,13 @@ public class StudentService {
         return null; // Student not found
     }
 
+    public List<Classroom> getStudentClasses(Long studentId) {
+        Student student = studentRepository.findById(studentId).orElse(null);
+        if (student != null) {
+            return student.getClassrooms();
+        }
+        return null; // Student not found
+    }
+
 
 }

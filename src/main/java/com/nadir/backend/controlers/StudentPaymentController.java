@@ -23,14 +23,14 @@ public class StudentPaymentController {
     }
 
     @PostMapping("/students/{studentId}")
-    public ResponseEntity<String> addPaymentForStudent(
+    public ResponseEntity<StudentPaymentRequest> addPaymentForStudent(
             @PathVariable Long studentId,
             @RequestBody StudentPaymentRequest paymentRequest
     ) {
         boolean paymentAdded = studentPaymentService.addPaymentForStudent(studentId, paymentRequest);
-        if (paymentAdded) {
-            return new ResponseEntity<>("Payment added successfully", HttpStatus.CREATED);
-        }
-        return new ResponseEntity<>("Failed to add payment. Student or classroom not found.", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(paymentRequest, HttpStatus.CREATED);
+//        if (paymentAdded) {
+//        }
+//        return new ResponseEntity<>("Failed to add payment. Student or classroom not found.", HttpStatus.BAD_REQUEST);
     }
 }

@@ -39,4 +39,9 @@ public class StudentController {
     public List<Classroom> getEnrolledClasses(@PathVariable Long id) {
         return studentService.getEnrolledClasses(id);
     }
+
+    @GetMapping("/{studentId}/classes")
+    public List<Classroom> getStudentClasses(@PathVariable Long studentId) {
+        return studentService.getStudentClasses(studentId);
+    }
 }
