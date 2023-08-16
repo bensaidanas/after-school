@@ -1,9 +1,6 @@
 package com.nadir.backend.services;
 
-import com.nadir.backend.models.Classroom;
-import com.nadir.backend.models.Student;
 import com.nadir.backend.models.Teacher;
-import com.nadir.backend.repositories.StudentRepository;
 import com.nadir.backend.repositories.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +13,7 @@ public class TeacherService {
     private final TeacherRepository teacherRepository;
 
     public List<Teacher> getAllTeachers() {
-        return teacherRepository.findAll();
+        return teacherRepository.findAllByDeleted(Boolean.FALSE);
     }
 
     public Teacher getTeacherById(Long id) {
@@ -28,13 +25,22 @@ public class TeacherService {
     }
 
     public Teacher updateTeacher(Long id, Teacher updatedTeacher) {
-        Teacher existingStudent = teacherRepository.findById(id).orElse(null);
-        if (existingStudent != null) {
+        Teacher existingTeacher = teacherRepository.findById(id).orElse(null);
+        if (existingTeacher != null) {
             // Update fields as needed
-            existingStudent.setFirstName(updatedTeacher.getFirstName());
-            existingStudent.setLastName(updatedTeacher.getLastName());
+            existingTeacher.setFirstName(updatedTeacher.getFirstName());
+            existingTeacher.setLastName(updatedTeacher.getLastName());
             // ... other fields
-            return teacherRepository.save(existingStudent);
+            return teacherRepository.save(existingTeacher);
+        }
+        return null; // Student not found
+    }
+
+    public Teacher deleteTeacher(Long id) {
+        Teacher existingTeacher = teacherRepository.findById(id).orElse(null);
+        if (existingTeacher != null) {
+            existingTeacher.setDeleted(Boolean.TRUE);
+            return teacherRepository.save(existingTeacher);
         }
         return null; // Student not found
     }

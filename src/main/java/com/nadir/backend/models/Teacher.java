@@ -26,4 +26,6 @@ public class Teacher {
     @ManyToOne
     @JoinColumn(name = "subject_id")
     private Subject subject;
+
+    private boolean deleted;
 }
