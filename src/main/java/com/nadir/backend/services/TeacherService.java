@@ -30,6 +30,11 @@ public class TeacherService {
             // Update fields as needed
             existingTeacher.setFirstName(updatedTeacher.getFirstName());
             existingTeacher.setLastName(updatedTeacher.getLastName());
+            existingTeacher.setEmail(updatedTeacher.getEmail());
+            existingTeacher.setPhoneNumber(updatedTeacher.getPhoneNumber());
+            existingTeacher.setAddress(updatedTeacher.getAddress());
+            existingTeacher.setSalaryBySession(updatedTeacher.getSalaryBySession());
+            existingTeacher.setSubject(updatedTeacher.getSubject());
             // ... other fields
             return teacherRepository.save(existingTeacher);
         }
