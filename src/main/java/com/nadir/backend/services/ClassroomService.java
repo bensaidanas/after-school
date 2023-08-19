@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,19 +41,22 @@ public class ClassroomService {
         return null; // Classroom or student not found
     }
 
-    public List<Student> getStudentsInClass(Long classroomId) {
+    public List<Student> getUndeletedStudentsInClass(Long classroomId) {
         Classroom classroom = classroomRepository.findById(classroomId).orElse(null);
         if (classroom != null) {
-            return classroom.getStudents();
+            return classroom.getStudents().stream()
+                    .filter(student -> !student.isDeleted()) // Filter out deleted students
+                    .collect(Collectors.toList());
         }
         return null; // Classroom not found
     }
+
 
     public List<Student> getStudentsNotInClassroom(Long classroomId) {
         Classroom classroom = classroomRepository.findById(classroomId).orElse(null);
         if (classroom != null) {
             Grade grade = classroom.getGrade();
-            List<Student> studentsInGrade = studentRepository.findByGrade(grade);
+            List<Student> studentsInGrade = studentRepository.findByGradeAndDeletedFalse(grade);
 
             List<Student> studentsInClassroom = classroom.getStudents();
             studentsInGrade.removeAll(studentsInClassroom);

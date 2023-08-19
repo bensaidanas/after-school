@@ -30,7 +30,9 @@ public class Student {
     @JoinColumn(name = "grade_id")
     private Grade grade;
 
-    @ManyToMany(mappedBy = "students")
+    @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     private List<Classroom> classrooms;
+
+    private boolean deleted = false;
 }

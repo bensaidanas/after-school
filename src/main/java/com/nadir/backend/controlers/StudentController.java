@@ -4,6 +4,8 @@ import com.nadir.backend.models.Classroom;
 import com.nadir.backend.models.Student;
 import com.nadir.backend.services.StudentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,5 +45,17 @@ public class StudentController {
     @GetMapping("/{studentId}/classes")
     public List<Classroom> getStudentClasses(@PathVariable Long studentId) {
         return studentService.getStudentClasses(studentId);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
+        Student student = studentService.getStudentById(id);
+        if (student != null) {
+            student.setDeleted(true);
+            studentService.updateStudent(id, student);
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

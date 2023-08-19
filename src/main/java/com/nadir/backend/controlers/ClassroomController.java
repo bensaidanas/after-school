@@ -4,6 +4,8 @@ import com.nadir.backend.models.Classroom;
 import com.nadir.backend.models.Student;
 import com.nadir.backend.services.ClassroomService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +30,16 @@ public class ClassroomController {
     @GetMapping
     public List<Classroom> getAllClasses() {
         return classroomService.getAllClasses();
+    }
+
+    @GetMapping("/{classroomId}/students")
+    public ResponseEntity<List<Student>> getUndeletedStudentsInClass(@PathVariable Long classroomId) {
+        List<Student> undeletedStudents = classroomService.getUndeletedStudentsInClass(classroomId);
+        if (undeletedStudents != null) {
+            return new ResponseEntity(undeletedStudents, HttpStatus.OK);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/{classroomId}/students/{studentId}")

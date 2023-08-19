@@ -16,7 +16,7 @@ public class StudentService {
     private final StudentRepository studentRepository;
 
     public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+        return studentRepository.findByDeletedFalse();
     }
 
     public Student getStudentById(Long id) {
@@ -33,7 +33,10 @@ public class StudentService {
             // Update fields as needed
             existingStudent.setFirstName(updatedStudent.getFirstName());
             existingStudent.setLastName(updatedStudent.getLastName());
-            // ... other fields
+            existingStudent.setEmail(updatedStudent.getEmail());
+            existingStudent.setPhoneNumber(updatedStudent.getPhoneNumber());
+            existingStudent.setGrade(updatedStudent.getGrade());
+            existingStudent.setMajor(updatedStudent.getMajor());
             return studentRepository.save(existingStudent);
         }
         return null; // Student not found
@@ -53,6 +56,10 @@ public class StudentService {
             return student.getClassrooms();
         }
         return null; // Student not found
+    }
+
+    public void delete(Long id) {
+        studentRepository.deleteById(id);
     }
 
 
