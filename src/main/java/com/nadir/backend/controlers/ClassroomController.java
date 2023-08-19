@@ -59,4 +59,25 @@ public class ClassroomController {
     public List<Student> getNonEnrolledStudents(@PathVariable Long classroomId) {
         return classroomService.getStudentsNotInClassroom(classroomId);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteClass(@PathVariable Long id) {
+        Classroom classroom = classroomService.getClassroomById(id);
+        if (classroom != null) {
+            classroom.setDeleted(true);
+            classroomService.deleteClassAndUnenrollStudents(id);
+            classroomService.updateClassroom(id, classroom);
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{classroomId}/students/{studentId}")
+    public ResponseEntity<String> unenrollStudentFromClass(
+            @PathVariable Long classroomId,
+            @PathVariable Long studentId) {
+        classroomService.unenrollStudentFromClass(classroomId, studentId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

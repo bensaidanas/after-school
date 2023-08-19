@@ -62,5 +62,15 @@ public class StudentService {
         studentRepository.deleteById(id);
     }
 
+    public void unenrollStudentFromClass(Long studentId, Long classId) {
+        Student student = studentRepository.findById(studentId).orElse(null);
+        if (student != null) {
+            List<Classroom> classrooms = student.getClassrooms();
+            classrooms.removeIf(classroom -> classroom.getId().equals(classId));
+            student.setClassrooms(classrooms);
+            studentRepository.save(student);
+        }
+    }
+
 
 }

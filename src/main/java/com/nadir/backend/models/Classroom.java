@@ -38,4 +38,6 @@ public class Classroom {
             inverseJoinColumns = @JoinColumn(name = "student_id")
     )
     private List<Student> students;
+
+    private boolean deleted = false;
 }

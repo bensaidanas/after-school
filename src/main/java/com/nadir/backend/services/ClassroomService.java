@@ -8,6 +8,7 @@ import com.nadir.backend.repositories.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,7 @@ public class ClassroomService {
     }
 
     public List<Classroom> getAllClasses() {
-        return classroomRepository.findAll();
+        return classroomRepository.findByDeletedFalse();
     }
 
     public Classroom addStudentToClass(Long classroomId, Long studentId) {
@@ -64,5 +65,40 @@ public class ClassroomService {
             return studentsInGrade;
         }
         return null; // Classroom not found
+    }
+
+    public void deleteClassAndUnenrollStudents(Long classId) {
+        Classroom classroom = classroomRepository.findById(classId).orElse(null);
+        if (classroom != null) {
+            List<Student> students = classroom.getStudents();
+            for (Student student : students) {
+                student.getClassrooms().remove(classroom);
+            }
+            classroom.setStudents(new ArrayList<>()); // Clear the students list
+            classroomRepository.save(classroom);
+        }
+    }
+
+    public Classroom updateClassroom(Long id, Classroom updatedClassroom) {
+        Classroom existingClassroom = classroomRepository.findById(id).orElse(null);
+        if (existingClassroom != null) {
+            // Update fields as needed
+            existingClassroom.setName(updatedClassroom.getName());
+            existingClassroom.setTeacher(updatedClassroom.getTeacher());
+            existingClassroom.setPrice(updatedClassroom.getPrice());
+            existingClassroom.setSessionNumber(updatedClassroom.getSessionNumber());
+
+            return classroomRepository.save(existingClassroom);
+        }
+        return null; // Student not found
+    }
+
+    public void unenrollStudentFromClass(Long classroomId, Long studentId) {
+        Classroom classroom = classroomRepository.findById(classroomId).orElse(null);
+        if (classroom != null) {
+            List<Student> students = classroom.getStudents();
+            students.removeIf(student -> student.getId().equals(studentId));
+            classroomRepository.save(classroom);
+        }
     }
 }
