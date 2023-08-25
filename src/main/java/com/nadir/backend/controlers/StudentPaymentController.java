@@ -29,8 +29,5 @@ public class StudentPaymentController {
     ) {
         boolean paymentAdded = studentPaymentService.addPaymentForStudent(studentId, paymentRequest);
         return new ResponseEntity<>(paymentRequest, HttpStatus.CREATED);
-//        if (paymentAdded) {
-//        }
-//        return new ResponseEntity<>("Failed to add payment. Student or classroom not found.", HttpStatus.BAD_REQUEST);
     }
 }

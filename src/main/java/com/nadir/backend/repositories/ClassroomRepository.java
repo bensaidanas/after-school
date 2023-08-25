@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ClassroomRepository extends JpaRepository<Classroom, Long> {
     List<Classroom> findByDeletedFalse(); // Retrieve only undeleted classes
+
+    List<Classroom> findByTeacherIdAndDeletedFalse(Long teacherId);
 }

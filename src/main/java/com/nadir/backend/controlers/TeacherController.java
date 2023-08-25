@@ -1,5 +1,6 @@
 package com.nadir.backend.controlers;
 
+import com.nadir.backend.models.Classroom;
 import com.nadir.backend.models.Teacher;
 import com.nadir.backend.services.TeacherService;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,13 @@ public class TeacherController {
         teacherService.deleteTeacher(id);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @GetMapping("/{teacherId}/classes")
+    public ResponseEntity<List<Classroom>> getClassesTaughtByTeacher(@PathVariable Long teacherId) {
+        List<Classroom> classes = teacherService.getClassesTaughtByTeacher(teacherId);
+        return ResponseEntity.ok(classes);
+    }
+
 
 
 //    @GetMapping("/{id}/enrolled-classes")

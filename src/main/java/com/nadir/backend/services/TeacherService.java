@@ -1,6 +1,8 @@
 package com.nadir.backend.services;
 
+import com.nadir.backend.models.Classroom;
 import com.nadir.backend.models.Teacher;
+import com.nadir.backend.repositories.ClassroomRepository;
 import com.nadir.backend.repositories.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeacherService {
     private final TeacherRepository teacherRepository;
+    private final ClassroomRepository classroomRepository;
 
     public List<Teacher> getAllTeachers() {
         return teacherRepository.findAllByDeleted(Boolean.FALSE);
@@ -49,6 +52,11 @@ public class TeacherService {
         }
         return null; // Student not found
     }
+
+    public List<Classroom> getClassesTaughtByTeacher(Long teacherId) {
+        return classroomRepository.findByTeacherIdAndDeletedFalse(teacherId);
+    }
+
 
 //    public List<Classroom> getEnrolledClasses(Long teacherId) {
 //        Teacher teacher = teacherRepository.findById(teacherId).orElse(null);

@@ -2,6 +2,7 @@ package com.nadir.backend.controlers;
 
 import com.nadir.backend.models.Classroom;
 import com.nadir.backend.models.Student;
+import com.nadir.backend.models.Teacher;
 import com.nadir.backend.services.ClassroomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -79,5 +80,10 @@ public class ClassroomController {
             @PathVariable Long studentId) {
         classroomService.unenrollStudentFromClass(classroomId, studentId);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public Classroom updateClassroom(@PathVariable Long id, @RequestBody Classroom updatedClassroom) {
+        return classroomService.updateClassroom(id, updatedClassroom);
     }
 }
