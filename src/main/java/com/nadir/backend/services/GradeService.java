@@ -14,8 +14,9 @@ public class GradeService {
     private final GradeRepository gradeRepository;
 
     public List<Grade> getAllGrades() {
-        return gradeRepository.findAll();
+        return gradeRepository.findByDeletedFalse();
     }
+
 
     public Grade createGrade(Grade grade) {
         return gradeRepository.save(grade);
@@ -23,5 +24,15 @@ public class GradeService {
 
     public Grade getGradeById(Long id) {
         return gradeRepository.findById(id).orElse(null);
+    }
+
+    public Grade update(Long id, Grade updated) {
+        Grade existingStudent = gradeRepository.findById(id).orElse(null);
+        if (existingStudent != null) {
+            // Update fields as needed
+            existingStudent.setName(updated.getName());
+            return gradeRepository.save(existingStudent);
+        }
+        return null; // Student not found
     }
 }

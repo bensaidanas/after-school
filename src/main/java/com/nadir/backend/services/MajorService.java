@@ -15,7 +15,7 @@ public class MajorService {
     private final MajorRepository majorRepository;
 
     public List<Major> getAllMajors() {
-        List<Major> allMajors = majorRepository.findAll();
+        List<Major> allMajors = majorRepository.findByDeletedFalse();
 
         if (allMajors.size() > 1) {
             return allMajors.stream().skip(1).collect(Collectors.toList());
@@ -29,5 +29,15 @@ public class MajorService {
     }
     public Major getMajorById(Long id) {
         return majorRepository.findById(id).orElse(null);
+    }
+
+    public Major update(Long id, Major updated) {
+        Major existingStudent = majorRepository.findById(id).orElse(null);
+        if (existingStudent != null) {
+            // Update fields as needed
+            existingStudent.setName(updated.getName());
+            return majorRepository.save(existingStudent);
+        }
+        return null; // Student not found
     }
 }

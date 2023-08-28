@@ -20,4 +20,7 @@ public class Major {
     private Long id;
 
     private String name;
+
+    private boolean deleted = false;
+
 }
